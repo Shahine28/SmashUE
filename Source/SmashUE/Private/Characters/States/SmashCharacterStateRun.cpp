@@ -4,6 +4,8 @@
 #include "Characters/States/SmashCharacterStateRun.h"
 
 #include "Characters/SmashCharacter.h"
+#include "Characters/SmashCharacterSettings.h"
+#include "Characters/SmashCharacterStateMachine.h"
 
 
 ESmashCharacterStateID USmashCharacterStateRun::GetStateID()
@@ -15,12 +17,12 @@ void USmashCharacterStateRun::StateEnter(ESmashCharacterStateID PreviousStateID)
 {
 	Super::StateEnter(PreviousStateID);
 	
-	GEngine->AddOnScreenDebugMessage(
-	-1,
-	3.f,
-	FColor::Cyan,
-	TEXT("Enter State: Run")
-	);
+	// GEngine->AddOnScreenDebugMessage(
+	// -1,
+	// 3.f,
+	// FColor::Cyan,
+	// TEXT("Enter State: Run")
+	// );
 	
 }
 
@@ -28,24 +30,32 @@ void USmashCharacterStateRun::StateExit(ESmashCharacterStateID NextStateID)
 {
 	Super::StateExit(NextStateID);
 
-	GEngine->AddOnScreenDebugMessage(
-	-1,
-	3.f,
-	FColor::Cyan,
-	TEXT("Exit State: Run")
-	);
+	// GEngine->AddOnScreenDebugMessage(
+	// -1,
+	// 3.f,
+	// FColor::Cyan,
+	// TEXT("Exit State: Run")
+	// );
 }
 
 void USmashCharacterStateRun::StateTick(float DeltaTime)
 {
 	Super::StateTick(DeltaTime);
 	
-	GEngine->AddOnScreenDebugMessage(
-	-1,
-	3.f,
-	FColor::Green,
-	TEXT("Tick State: Run"));
-
-	Character->Move(WalkMaxSpeed);
+	// GEngine->AddOnScreenDebugMessage(
+	// -1,
+	// 3.f,
+	// FColor::Green,
+	// TEXT("Tick State: Run"));
+	
+	if (FMath::Abs(Character->GetInputMoveX()) < CharacterSettings->InputMoveXTreshold)
+	{
+		StateMachine->ChangeState(ESmashCharacterStateID::Idle);
+	}
+	else
+	{
+		Character->SetOrientX(Character->GetInputMoveX());
+		Character->Move(WalkMaxSpeed);
+	}
 }
 

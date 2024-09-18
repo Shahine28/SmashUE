@@ -8,7 +8,7 @@
 #include "SmashCharacterState.generated.h"
 
 
-
+class USmashCharacterSettings;
 class ASmashCharacter;
 class USmashCharacterStateMachine;
 
@@ -39,6 +39,9 @@ public:
 protected:
 	UPROPERTY()
 	TObjectPtr<ASmashCharacter> Character;
+	
+	UPROPERTY()
+	const USmashCharacterSettings* CharacterSettings;
 
 	UPROPERTY()
 	TObjectPtr<USmashCharacterStateMachine> StateMachine;

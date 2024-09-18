@@ -2,6 +2,8 @@
 
 
 #include "Characters/SmashCharacterState.h"
+
+#include "Characters/SmashCharacterSettings.h"
 #include "Characters/SmashCharacterStateID.h"
 #include "Characters/SmashCharacterStateMachine.h"
 
@@ -20,6 +22,7 @@ ESmashCharacterStateID USmashCharacterState::GetStateID()
 void USmashCharacterState::StateInit(USmashCharacterStateMachine* InStateMachine)
 {
 	StateMachine = InStateMachine;
+	CharacterSettings = GetDefault<USmashCharacterSettings>();
 	Character = InStateMachine->GetCharacter();
 	GEngine->AddOnScreenDebugMessage(
 		-1,
@@ -41,6 +44,8 @@ void USmashCharacterState::StateExit(ESmashCharacterStateID NextStateID)
 void USmashCharacterState::StateTick(float DeltaTime)
 {
 }
+
+
 
 
 

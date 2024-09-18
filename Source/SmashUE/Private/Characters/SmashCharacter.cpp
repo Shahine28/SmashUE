@@ -87,7 +87,7 @@ void ASmashCharacter::TickStateMachine(float DeltaTime) const
 void ASmashCharacter::Move(float MaxWalkSpeed)
 {
 	GetCharacterMovement()->MaxWalkSpeed = MaxWalkSpeed;
-	AddMovementInput(GetActorForwardVector(), OrientX);
+	AddMovementInput(FVector::ForwardVector, OrientX);
 }
 
 void ASmashCharacter::SetupMappingContextIntoController() const
@@ -116,9 +116,16 @@ void ASmashCharacter::OnInputMoveX(const FInputActionValue& InputActionValue)
 	InputMoveX = InputActionValue.Get<float>();
 }
 
+void ASmashCharacter::OnInputMoveXFast(const FInputActionValue& InputActionValue)
+{
+	InputMoveX = InputActionValue.Get<float>();
+	InputMoveXFastEvent.Broadcast(InputMoveX);
+}
+
 void ASmashCharacter::BindInputMoveXAxisAndAction(UEnhancedInputComponent* EnhancedInputComponent)
 {
 	if (!InputData) return;
+
 	if (InputData -> InputActionMoveX)
 	{
 		EnhancedInputComponent->BindAction(
@@ -129,6 +136,17 @@ void ASmashCharacter::BindInputMoveXAxisAndAction(UEnhancedInputComponent* Enhan
 		);
 		
 	}
+
+	if (InputData->InputActionMoveXFast)
+	{
+		EnhancedInputComponent->BindAction(
+			InputData -> InputActionMoveXFast,
+			ETriggerEvent::Triggered,
+			this,
+			&ASmashCharacter::OnInputMoveXFast
+			);
+	}
+	
 }
 
 
