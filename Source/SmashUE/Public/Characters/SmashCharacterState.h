@@ -21,11 +21,13 @@ public:
 	// Sets default values for this component's properties
 	USmashCharacterState();
 
-public:
-
 	virtual ESmashCharacterStateID GetStateID();
 
 	virtual void StateInit(USmashCharacterStateMachine* InStateMachine);
+
+	virtual void StateEnter(ESmashCharacterStateID PreviousStateID);
+
+	virtual void StateExit(ESmashCharacterStateID NextStateID);
 
 protected:
 	UPROPERTY()

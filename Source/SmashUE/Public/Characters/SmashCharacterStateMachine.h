@@ -9,6 +9,7 @@
 /**
  * 
  */
+enum class ESmashCharacterStateID :uint8;
 class ASmashCharacter;
 class USmashCharacterState;
 UCLASS()
@@ -21,9 +22,19 @@ public:
 
 	ASmashCharacter* GetCharacter() const;
 
+	UFUNCTION(BlueprintCallable)
+	void ChangeState(ESmashCharacterStateID NextStateID);
+
+	USmashCharacterState* GetState(ESmashCharacterStateID StateID); 
+
 protected:
 	UPROPERTY()
 	TObjectPtr<ASmashCharacter> Character;
+
+	UPROPERTY(BlueprintReadOnly)
+	ESmashCharacterStateID CurrentStateID;
+	UPROPERTY()
+	TObjectPtr<USmashCharacterState> CurrentState;
 
 	TArray<USmashCharacterState*> AllStates;
 
