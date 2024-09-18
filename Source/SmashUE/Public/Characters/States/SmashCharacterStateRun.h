@@ -4,22 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "Characters/SmashCharacterState.h"
-#include "SmashCharacterStateIdle.generated.h"
+#include "SmashCharacterStateRun.generated.h"
 
 
-UCLASS(ClassGroup=(SmashCharacterState), meta=(BlueprintSpawnableComponent))
-class SMASHUE_API USmashCharacterStateIdle : public USmashCharacterState
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class SMASHUE_API USmashCharacterStateRun : public USmashCharacterState
 {
 	GENERATED_BODY()
-	
+
 public:
-
 	virtual ESmashCharacterStateID GetStateID() override;
-
+	
 	virtual void StateEnter(ESmashCharacterStateID PreviousStateID) override;
 
 	virtual void StateExit(ESmashCharacterStateID NextStateID) override;
 
 	virtual void StateTick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere)
+	float WalkMaxSpeed = 500.f;
 };
+

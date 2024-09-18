@@ -16,6 +16,12 @@ void USmashCharacterStateMachine::Init(ASmashCharacter* InCharacter)
 	ChangeState(ESmashCharacterStateID::Idle);
 }
 
+void USmashCharacterStateMachine::Tick(float DeltaTime)
+{
+	if (!CurrentState) return;
+	CurrentState->StateTick(DeltaTime);
+}
+
 ASmashCharacter* USmashCharacterStateMachine::GetCharacter() const
 {
 	return Character;
@@ -38,6 +44,8 @@ void USmashCharacterStateMachine::ChangeState(ESmashCharacterStateID NextStateID
 	{
 		CurrentState->StateEnter(PreviousStateID);
 	}
+	
+	Character->PlayAnimMontage(CurrentState->Montage);
 	
 }
 

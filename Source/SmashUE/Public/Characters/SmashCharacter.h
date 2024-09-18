@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SmashCharacterStateID.h"
 #include "GameFramework/Character.h"
 #include "SmashCharacter.generated.h"
 
@@ -37,13 +38,19 @@ protected:
 	float OrientX = 1.f;
 
 	void RotateMeshUsingOrientX() const;
+
 #pragma endregion
 #pragma region State Machine
 public:
 	void CreatStateMachine();
 	void InitStateMachine();
+	void TickStateMachine(float DeltaTime) const;
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<USmashCharacterStateMachine> StateMachine;
+#pragma endregion
+#pragma region Movement
+public:
+	void Move(float MaxWalkSpeed);
 #pragma endregion
 };

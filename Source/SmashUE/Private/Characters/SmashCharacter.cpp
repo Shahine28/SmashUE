@@ -4,6 +4,8 @@
 #include "Characters/SmashCharacter.h"
 
 #include "Characters/SmashCharacterStateMachine.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
 
 // Sets default values
 ASmashCharacter::ASmashCharacter()
@@ -26,6 +28,7 @@ void ASmashCharacter::BeginPlay()
 void ASmashCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	TickStateMachine(DeltaTime);
 	RotateMeshUsingOrientX();
 
 }
@@ -65,6 +68,22 @@ void ASmashCharacter::InitStateMachine()
 	if (!StateMachine) return;
 	StateMachine->Init(this);
 }
+
+void ASmashCharacter::TickStateMachine(float DeltaTime) const
+{
+	if (!StateMachine) return;
+	StateMachine->Tick(DeltaTime);
+}
+
+void ASmashCharacter::Move(float MaxWalkSpeed)
+{
+	GetCharacterMovement()->MaxWalkSpeed = MaxWalkSpeed;
+	AddMovementInput(GetActorForwardVector(), OrientX);
+}
+
+
+
+
 
 
 
