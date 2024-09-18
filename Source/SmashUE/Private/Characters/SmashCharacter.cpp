@@ -5,6 +5,7 @@
 
 #include "Characters/SmashCharacterStateMachine.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "EnhancedInputSubsystems.h"
 
 
 // Sets default values
@@ -20,7 +21,6 @@ void ASmashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	CreatStateMachine();
-	
 	InitStateMachine();
 }
 
@@ -37,6 +37,8 @@ void ASmashCharacter::Tick(float DeltaTime)
 void ASmashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	SetupMappingContextIntoController();
 
 }
 
@@ -80,6 +82,24 @@ void ASmashCharacter::Move(float MaxWalkSpeed)
 	GetCharacterMovement()->MaxWalkSpeed = MaxWalkSpeed;
 	AddMovementInput(GetActorForwardVector(), OrientX);
 }
+
+void ASmashCharacter::SetupMappingContextIntoController() const
+{
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!PlayerController) return;
+
+	ULocalPlayer* Player = PlayerController->GetLocalPlayer();
+	if (!Player) return;
+
+	UEnhancedInputLocalPlayerSubsystem* InputSystem = Player->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	if (!InputSystem) return;
+
+	
+	InputSystem->AddMappingContext(InputMappingContext, 0);
+	
+}
+
+
 
 
 

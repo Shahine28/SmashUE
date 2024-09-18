@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SmashCharacterStateID.h"
 #include "GameFramework/Character.h"
 #include "SmashCharacter.generated.h"
 
+class USmashCharacterInputData;
+class UInputMappingContext;
 class USmashCharacterStateMachine;
 UCLASS()
 class SMASHUE_API ASmashCharacter : public ACharacter
@@ -53,4 +54,16 @@ protected:
 public:
 	void Move(float MaxWalkSpeed);
 #pragma endregion
+#pragma region Input Data / Mapping Context
+public:
+	UPROPERTY()
+	TObjectPtr<UInputMappingContext> InputMappingContext;
+
+	UPROPERTY()
+	TObjectPtr<USmashCharacterInputData> InputData;
+
+protected:
+	void SetupMappingContextIntoController() const;
+#pragma endregion
+	
 };
