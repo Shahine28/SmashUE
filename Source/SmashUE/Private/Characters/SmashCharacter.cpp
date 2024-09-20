@@ -15,6 +15,7 @@ ASmashCharacter::ASmashCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	CanJumpAgain = false;
 }
 
 // Called when the game starts or when spawned
@@ -174,12 +175,37 @@ float ASmashCharacter::GetInputMoveY() const
 void ASmashCharacter::OnInputMoveY(const FInputActionValue& InputActionValue)
 {
 	InputMoveY = InputActionValue.Get<float>();
+	JumpFlipFlop = !JumpFlipFlop;
+	if (JumpFlipFlop)
+	{
+		CanJumpAgain = true;
+		GEngine->AddOnScreenDebugMessage(
+		-1,
+		3.f,
+		FColor::Cyan,
+		TEXT("Completed")
+		);
+	}
+	else if (!JumpFlipFlop)
+	{
+		CanJumpAgain = false;
+		GEngine->AddOnScreenDebugMessage(
+		-1,
+		3.f,
+		FColor::Cyan,
+		TEXT("Started")
+		);
+	}
+	
+	
+	
 }
 
 void ASmashCharacter::OnInputMoveYFast(const FInputActionValue& InputActionValue)
 {
 	InputMoveY = InputActionValue.Get<float>();
 	InputMoveYFastEvent.Broadcast(InputMoveY);
+	
 }
 
 void ASmashCharacter::BindInputMoveYAndAction(UEnhancedInputComponent* EnhancedInputComponent)
@@ -187,16 +213,16 @@ void ASmashCharacter::BindInputMoveYAndAction(UEnhancedInputComponent* EnhancedI
 	if (!InputData) return;
 	if (InputData -> InputActionMoveY)
 	{
-		EnhancedInputComponent->BindAction(
-			InputData -> InputActionMoveY,
-			ETriggerEvent::Started,
-			this,
-			&ASmashCharacter::OnInputMoveY);
 		 EnhancedInputComponent->BindAction(
-		  	InputData -> InputActionMoveY,
-		  	ETriggerEvent::Triggered,
-		  	this,
-			 &ASmashCharacter::OnInputMoveY);
+		 	InputData -> InputActionMoveY,
+		 	ETriggerEvent::Started,
+		 	this,
+		 	&ASmashCharacter::OnInputMoveY);
+		// EnhancedInputComponent->BindAction(
+		// 	InputData -> InputActionMoveY,
+		//    	ETriggerEvent::Triggered,
+		//    	this,
+		// 	&ASmashCharacter::OnInputMoveY);
 		EnhancedInputComponent->BindAction(
 			InputData -> InputActionMoveY,
 			ETriggerEvent::Completed,

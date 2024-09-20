@@ -48,4 +48,9 @@ void USmashCharacterStateFall::StateTick(float DeltaTime)
 		Character->SetOrientX(Character->GetInputMoveX());
 		Character->Move(FallHorizontalMoveSpeed);
 	}
+	if (Character->GetInputMoveY() > 0.1f && FMath::Abs(Character->GetInputMoveY()) > CharacterSettings->InputMoveYTreshold
+		&& Character->JumpCurrentCount < CharacterSettings->JumpMaxCount && Character->CanJumpAgain)
+	{
+		StateMachine->ChangeState(ESmashCharacterStateID::Jump);
+	}
 }

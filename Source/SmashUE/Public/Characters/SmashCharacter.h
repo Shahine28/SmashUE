@@ -95,6 +95,9 @@ public:
 
 	void DoJump();
 
+	UPROPERTY()
+	bool CanJumpAgain;
+
 
 	protected:
 	UPROPERTY()
@@ -107,7 +110,11 @@ private :
 
 	void BindInputMoveYAndAction(UEnhancedInputComponent* EnhancedInputComponent);
 
+	UPROPERTY()
+	bool JumpFlipFlop = true;
+
 	
 #pragma endregion
+	
 	
 };

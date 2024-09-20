@@ -18,7 +18,16 @@ ESmashCharacterStateID USmashCharacterStateJump::GetStateID()
 void USmashCharacterStateJump::StateEnter(ESmashCharacterStateID PreviousStateID)
 {
 	Super::StateEnter(PreviousStateID);
-	
+	// GEngine->AddOnScreenDebugMessage(
+	// -1,
+	// 3.f,
+	// FColor::Cyan,
+	// TEXT("Enter State: Jump")
+	// );
+	if (Character->JumpMaxCount != CharacterSettings->JumpMaxCount)
+	{
+		Character->JumpMaxCount = CharacterSettings->JumpMaxCount;
+	}
 	Character->GetCharacterMovement()->JumpZVelocity = (2 * JumpMaxHeight) / JumpDuration;
 	Character->GetCharacterMovement()->GravityScale = ((-2 * JumpMaxHeight)/FMath::Square(JumpDuration))/GetWorld()->GetGravityZ();
 	Character->GetCharacterMovement()->AirControl = JumpAirControl;
@@ -29,6 +38,12 @@ void USmashCharacterStateJump::StateEnter(ESmashCharacterStateID PreviousStateID
 void USmashCharacterStateJump::StateExit(ESmashCharacterStateID NextStateID)
 {
 	Super::StateExit(NextStateID);
+	// GEngine->AddOnScreenDebugMessage(
+	// -1,
+	// 3.f,
+	// FColor::Cyan,
+	// TEXT("Exit State: Jump")
+	// );
 	Character->GetCharacterMovement()->AirControl = 1.f;
 	Character->GetCharacterMovement()->GravityScale = 1.f;
 	Character->InputMoveYFastEvent.RemoveDynamic(this, &USmashCharacterStateJump::OnInputMoveYFast);
@@ -55,6 +70,11 @@ void USmashCharacterStateJump::StateTick(float DeltaTime)
 	{
 		Character->SetOrientX(Character->GetInputMoveX());
 		Character->Move(JumpWalkSpeed);
+	}
+	if (Character->GetInputMoveY() > 0.1f && FMath::Abs(Character->GetInputMoveY()) > CharacterSettings->InputMoveYTreshold
+		&& Character->JumpCurrentCount < Character->JumpMaxCount && Character->CanJumpAgain)
+	{
+		StateMachine->ChangeState(ESmashCharacterStateID::Jump);
 	}
 }
 

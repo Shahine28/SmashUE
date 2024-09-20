@@ -27,4 +27,8 @@ public:
 
 	UPROPERTY(Config, EditAnywhere, Category = "Inputs")
 	float InputMoveYTreshold = .1f;
+
+	UPROPERTY(Config, EditAnywhere, Category = "Inputs")
+	int JumpMaxCount;
+	
 };
