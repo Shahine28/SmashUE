@@ -6,6 +6,7 @@
 #include "Characters/SmashCharacter.h"
 #include "Characters/SmashCharacterSettings.h"
 #include "Characters/SmashCharacterStateMachine.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 ESmashCharacterStateID USmashCharacterStateWalk::GetStateID()
@@ -16,6 +17,11 @@ ESmashCharacterStateID USmashCharacterStateWalk::GetStateID()
 void USmashCharacterStateWalk::OnInputMoveXFast(float InputMoveX)
 {
 	StateMachine->ChangeState(ESmashCharacterStateID::Run);
+}
+
+void USmashCharacterStateWalk::OnInputMoveYFast(float InputJump)
+{
+	
 }
 
 void USmashCharacterStateWalk::StateEnter(ESmashCharacterStateID PreviousStateID)
@@ -30,6 +36,7 @@ void USmashCharacterStateWalk::StateEnter(ESmashCharacterStateID PreviousStateID
 	// );
 
 	Character->InputMoveXFastEvent.AddDynamic(this, &USmashCharacterStateWalk::OnInputMoveXFast);
+	Character->InputMoveYFastEvent.AddDynamic(this, &USmashCharacterStateWalk::OnInputMoveYFast);
 	
 }
 
@@ -45,6 +52,7 @@ void USmashCharacterStateWalk::StateExit(ESmashCharacterStateID NextStateID)
 	// );
 
 	Character->InputMoveXFastEvent.RemoveDynamic(this, &USmashCharacterStateWalk::OnInputMoveXFast);
+	Character->InputMoveYFastEvent.RemoveDynamic(this, &USmashCharacterStateWalk::OnInputMoveYFast);
 }
 
 void USmashCharacterStateWalk::StateTick(float DeltaTime)
@@ -56,8 +64,17 @@ void USmashCharacterStateWalk::StateTick(float DeltaTime)
 	// 3.f,
 	// FColor::Green,
 	// TEXT("Tick State: Walk"));
-
-	if (FMath::Abs(Character->GetInputMoveX()) < CharacterSettings->InputMoveXTreshold)
+	if(Character->GetVelocity().Z < 0 && !Character->GetCharacterMovement()->IsMovingOnGround())
+	{
+		StateMachine->ChangeState(ESmashCharacterStateID::Fall);	
+	}
+	else if (FMath::Abs(Character->GetInputMoveY()) > CharacterSettings->InputMoveYTreshold &&
+	Character->GetInputMoveY() > .1f && Character->GetCharacterMovement()->IsMovingOnGround()||
+	Character->GetVelocity().Z > .1f)
+	{
+		StateMachine->ChangeState(ESmashCharacterStateID::Jump);
+	}
+	else if (FMath::Abs(Character->GetInputMoveX()) < CharacterSettings->InputMoveXTreshold)
 	{
 		StateMachine->ChangeState(ESmashCharacterStateID::Idle);
 	}

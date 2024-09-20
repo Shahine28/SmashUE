@@ -46,6 +46,7 @@ void ASmashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	if (!EnhancedInputComponent) return;
 
 	BindInputMoveXAxisAndAction(EnhancedInputComponent);
+	BindInputMoveYAndAction(EnhancedInputComponent);
 
 }
 
@@ -88,6 +89,11 @@ void ASmashCharacter::Move(float MaxWalkSpeed)
 {
 	GetCharacterMovement()->MaxWalkSpeed = MaxWalkSpeed;
 	AddMovementInput(FVector::ForwardVector, OrientX);
+}
+
+void ASmashCharacter::DoJump()
+{
+	Jump();
 }
 
 void ASmashCharacter::SetupMappingContextIntoController() const
@@ -160,6 +166,55 @@ void ASmashCharacter::BindInputMoveXAxisAndAction(UEnhancedInputComponent* Enhan
 	}
 	
 }
+
+float ASmashCharacter::GetInputMoveY() const
+{
+	return InputMoveY;
+}
+
+void ASmashCharacter::OnInputMoveY(const FInputActionValue& InputActionValue)
+{
+	InputMoveY = InputActionValue.Get<float>();
+}
+
+void ASmashCharacter::OnInputMoveYFast(const FInputActionValue& InputActionValue)
+{
+	InputMoveY = InputActionValue.Get<float>();
+	InputMoveYFastEvent.Broadcast(InputMoveY);
+}
+
+void ASmashCharacter::BindInputMoveYAndAction(UEnhancedInputComponent* EnhancedInputComponent)
+{
+	if (!InputData) return;
+	if (InputData -> InputActionMoveY)
+	{
+		EnhancedInputComponent->BindAction(
+			InputData -> InputActionMoveY,
+			ETriggerEvent::Started,
+			this,
+			&ASmashCharacter::OnInputMoveY);
+		// EnhancedInputComponent->BindAction(
+		//  	InputData -> InputActionMoveY,
+		//  	ETriggerEvent::Triggered,
+		//  	this,
+			// &ASmashCharacter::OnInputMoveY);
+		EnhancedInputComponent->BindAction(
+			InputData -> InputActionMoveY,
+			ETriggerEvent::Completed,
+			this,
+			&ASmashCharacter::OnInputMoveY);
+	}
+	if (InputData->InputActionMoveYFast)
+	{
+		EnhancedInputComponent->BindAction(
+			InputData -> InputActionMoveYFast,
+			ETriggerEvent::Triggered,
+			this,
+			&ASmashCharacter::OnInputMoveYFast);
+	}
+}
+
+
 
 
 

@@ -85,5 +85,29 @@ private:
 	
 	void BindInputMoveXAxisAndAction(UEnhancedInputComponent* EnhancedInputComponent);
 #pragma endregion
+#pragma region Input Jump
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInputMoveYFastEvent, float, InputJump);
+public:
+	float GetInputMoveY() const;
+
+	UPROPERTY()
+	FInputMoveYFastEvent InputMoveYFastEvent;
+
+	void DoJump();
+
+
+	protected:
+	UPROPERTY()
+	float InputMoveY = 0.f;
+
+private :
+	void OnInputMoveY(const FInputActionValue& InputActionValue);
+
+	void OnInputMoveYFast(const FInputActionValue& InputActionValue);
+
+	void BindInputMoveYAndAction(UEnhancedInputComponent* EnhancedInputComponent);
+
+	
+#pragma endregion
 	
 };

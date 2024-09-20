@@ -4,23 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Characters/SmashCharacterState.h"
-#include "SmashCharacterStateIdle.generated.h"
+#include "SmashCharacterStateFall.generated.h"
 
 
-UCLASS(ClassGroup=(SmashCharacterState), meta=(BlueprintSpawnableComponent))
-class SMASHUE_API USmashCharacterStateIdle : public USmashCharacterState
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class SMASHUE_API USmashCharacterStateFall : public USmashCharacterState
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	virtual ESmashCharacterStateID GetStateID() override;
-
-	UFUNCTION()
-	void OnInputMoveXFast(float InputMoveX);
 	
-	UFUNCTION()
-	void OnInputMoveYFast(float InputMoveY);
 	
 	virtual void StateEnter(ESmashCharacterStateID PreviousStateID) override;
 
@@ -28,4 +23,16 @@ public:
 
 	virtual void StateTick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere)
+	float FallHorizontalMoveSpeed = 400.f;
+
+	UPROPERTY(EditAnywhere)
+	float FallAirControl = 1.f;
+
+	UPROPERTY(EditAnywhere)
+	float FallGravityScale = 3.f;
+
+	UPROPERTY(EditAnywhere)
+	float FallFastGravityScale = 10.f;
+	
 };
