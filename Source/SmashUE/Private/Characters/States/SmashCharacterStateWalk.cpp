@@ -68,8 +68,8 @@ void USmashCharacterStateWalk::StateTick(float DeltaTime)
 	{
 		StateMachine->ChangeState(ESmashCharacterStateID::Fall);	
 	}
-	else if (FMath::Abs(Character->GetInputMoveY()) > CharacterSettings->InputMoveYTreshold &&
-	Character->GetInputMoveY() > .1f && Character->GetCharacterMovement()->IsMovingOnGround()||
+	else if ((FMath::Abs(Character->GetInputMoveY()) > CharacterSettings->InputMoveYTreshold &&
+	Character->GetInputMoveY() > .1f && Character->GetCharacterMovement()->IsMovingOnGround())||
 	Character->GetVelocity().Z > .1f)
 	{
 		StateMachine->ChangeState(ESmashCharacterStateID::Jump);

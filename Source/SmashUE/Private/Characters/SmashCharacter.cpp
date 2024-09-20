@@ -15,7 +15,6 @@ ASmashCharacter::ASmashCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -193,11 +192,11 @@ void ASmashCharacter::BindInputMoveYAndAction(UEnhancedInputComponent* EnhancedI
 			ETriggerEvent::Started,
 			this,
 			&ASmashCharacter::OnInputMoveY);
-		// EnhancedInputComponent->BindAction(
-		//  	InputData -> InputActionMoveY,
-		//  	ETriggerEvent::Triggered,
-		//  	this,
-			// &ASmashCharacter::OnInputMoveY);
+		 EnhancedInputComponent->BindAction(
+		  	InputData -> InputActionMoveY,
+		  	ETriggerEvent::Triggered,
+		  	this,
+			 &ASmashCharacter::OnInputMoveY);
 		EnhancedInputComponent->BindAction(
 			InputData -> InputActionMoveY,
 			ETriggerEvent::Completed,
