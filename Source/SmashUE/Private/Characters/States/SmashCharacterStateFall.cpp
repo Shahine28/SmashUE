@@ -38,19 +38,20 @@ void USmashCharacterStateFall::StateTick(float DeltaTime)
 	{
 		StateMachine->ChangeState(ESmashCharacterStateID::Idle);	
 	}
-	if (FMath::Abs(Character->GetInputMoveY()) > CharacterSettings->InputMoveYTreshold &&
+	else if (FMath::Abs(Character->GetInputMoveY()) > CharacterSettings->InputMoveYTreshold &&
 		Character->GetInputMoveY() < 0.f)
 	{
 		Character->GetCharacterMovement()->GravityScale = FallFastGravityScale;
 	}
-	if (FMath::Abs(Character->GetInputMoveX()) > CharacterSettings->InputMoveXTreshold)
+	else if (Character->GetInputMoveY() > CharacterSettings->InputMoveYTreshold && Character->bCanJump &&
+		Character->JumpCurrentCount < Character->JumpMaxCount)
+	{
+		StateMachine->ChangeState(ESmashCharacterStateID::Jump);
+	}
+	else if (FMath::Abs(Character->GetInputMoveX()) > CharacterSettings->InputMoveXTreshold)
 	{
 		Character->SetOrientX(Character->GetInputMoveX());
 		Character->Move(FallHorizontalMoveSpeed);
 	}
-	if (Character->GetInputMoveY() > 0.1f && FMath::Abs(Character->GetInputMoveY()) > CharacterSettings->InputMoveYTreshold
-		&& Character->JumpCurrentCount < CharacterSettings->JumpMaxCount && Character->CanJumpAgain)
-	{
-		StateMachine->ChangeState(ESmashCharacterStateID::Jump);
-	}
+
 }

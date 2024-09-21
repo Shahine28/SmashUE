@@ -33,6 +33,16 @@ void USmashCharacterStateJump::StateEnter(ESmashCharacterStateID PreviousStateID
 	Character->GetCharacterMovement()->AirControl = JumpAirControl;
 	Character->DoJump();
 	Character->InputMoveYFastEvent.AddDynamic(this, &USmashCharacterStateJump::OnInputMoveYFast);
+	if (!Character->JumpFlipFlop)
+	{
+		Character->bCanJump = false;
+		GEngine->AddOnScreenDebugMessage(
+		-1,
+		3.f,
+		FColor::Cyan,
+		TEXT("Started")
+		);
+	}
 }
 
 void USmashCharacterStateJump::StateExit(ESmashCharacterStateID NextStateID)
@@ -66,13 +76,13 @@ void USmashCharacterStateJump::StateTick(float DeltaTime)
 		Character->StopJumping();
 		StateMachine->ChangeState(ESmashCharacterStateID::Fall);	
 	}
-	if (FMath::Abs(Character->GetInputMoveX()) > CharacterSettings->InputMoveXTreshold)
+	else if (FMath::Abs(Character->GetInputMoveX()) > CharacterSettings->InputMoveXTreshold)
 	{
 		Character->SetOrientX(Character->GetInputMoveX());
 		Character->Move(JumpWalkSpeed);
 	}
-	if (Character->GetInputMoveY() > 0.1f && FMath::Abs(Character->GetInputMoveY()) > CharacterSettings->InputMoveYTreshold
-		&& Character->JumpCurrentCount < Character->JumpMaxCount && Character->CanJumpAgain)
+	else if (Character->GetInputMoveY() > CharacterSettings->InputMoveYTreshold
+		&& Character->JumpCurrentCount < Character->JumpMaxCount && Character->bCanJump)
 	{
 		StateMachine->ChangeState(ESmashCharacterStateID::Jump);
 	}

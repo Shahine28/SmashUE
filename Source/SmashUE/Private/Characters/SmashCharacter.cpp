@@ -15,7 +15,7 @@ ASmashCharacter::ASmashCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	CanJumpAgain = false;
+	bCanJump = true;
 }
 
 // Called when the game starts or when spawned
@@ -178,7 +178,7 @@ void ASmashCharacter::OnInputMoveY(const FInputActionValue& InputActionValue)
 	JumpFlipFlop = !JumpFlipFlop;
 	if (JumpFlipFlop)
 	{
-		CanJumpAgain = true;
+		bCanJump = true;
 		GEngine->AddOnScreenDebugMessage(
 		-1,
 		3.f,
@@ -186,19 +186,6 @@ void ASmashCharacter::OnInputMoveY(const FInputActionValue& InputActionValue)
 		TEXT("Completed")
 		);
 	}
-	else if (!JumpFlipFlop)
-	{
-		CanJumpAgain = false;
-		GEngine->AddOnScreenDebugMessage(
-		-1,
-		3.f,
-		FColor::Cyan,
-		TEXT("Started")
-		);
-	}
-	
-	
-	
 }
 
 void ASmashCharacter::OnInputMoveYFast(const FInputActionValue& InputActionValue)
