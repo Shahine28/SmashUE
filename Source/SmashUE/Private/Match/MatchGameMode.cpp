@@ -9,15 +9,17 @@
 #include "Characters/SmashCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "InputMappingContext.h"
-
+#include "LocalMultiplayerSubsystem.h"
 
 
 void AMatchGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	CreateAndInitPlayers();
 	TArray<AArenaPlayerStart*> PlayerStartsPoints;
 	FindPlayerStartActorsInArena(PlayerStartsPoints);
 	SpawnCharacters(PlayerStartsPoints);
+	
 }
 
 void AMatchGameMode::FindPlayerStartActorsInArena(TArray<AArenaPlayerStart*>& ResultActors)
@@ -69,7 +71,7 @@ void AMatchGameMode::SpawnCharacters(const TArray<AArenaPlayerStart*>& SpawnPoin
 
 		if (!NewCharacter) continue;
 		NewCharacter->InputData = InputData;
-		NewCharacter->InputMappingContext = InputMappingContext;
+		//NewCharacter->InputMappingContext = InputMappingContext;
 		NewCharacter->AutoPossessPlayer = SpawnPoint->AutoReceiveInput;
 		NewCharacter->SetOrientX(SpawnPoint->GetStartOrientX());
 		NewCharacter->FinishSpawning(SpawnPoint->GetTransform());
@@ -77,6 +79,18 @@ void AMatchGameMode::SpawnCharacters(const TArray<AArenaPlayerStart*>& SpawnPoin
 		CharactersInsideArena.Add(NewCharacter);
 		
 	}
+}
+
+void AMatchGameMode::CreateAndInitPlayers() const
+{
+	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	{
+		if (ULocalMultiplayerSubsystem* LocalMultiplayerSubsystem = GameInstance->GetSubsystem<ULocalMultiplayerSubsystem>())
+		{
+			LocalMultiplayerSubsystem->CreateAndInitPlayers(ELocalMultiplayerInputMappingType::InGame);
+		}
+	}
+	
 }
 
 USmashCharacterInputData* AMatchGameMode::LoadInputDataFromConfig()

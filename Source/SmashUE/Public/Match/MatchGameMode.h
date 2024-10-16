@@ -25,7 +25,8 @@ private:
 	UInputMappingContext* LoadInputMappingContext();
 	void FindPlayerStartActorsInArena(TArray<AArenaPlayerStart*>& ResultActors);
 	TSubclassOf<ASmashCharacter> GetSmashCharacterClassFromInputType(EAutoReceiveInput::Type InputType) const;
-	void SpawnCharacters(const TArray<AArenaPlayerStart*>& SpawnPoints);	
+	void SpawnCharacters(const TArray<AArenaPlayerStart*>& SpawnPoints);
+	void CreateAndInitPlayers() const;
 	
 protected:
 	UPROPERTY()

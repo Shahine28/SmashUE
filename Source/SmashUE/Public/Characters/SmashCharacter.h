@@ -85,7 +85,7 @@ private:
 	
 	void BindInputMoveXAxisAndAction(UEnhancedInputComponent* EnhancedInputComponent);
 #pragma endregion
-#pragma region Input Jump
+#pragma region Input Move Y
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInputMoveYFastEvent, float, InputJump);
 public:
 	float GetInputMoveY() const;

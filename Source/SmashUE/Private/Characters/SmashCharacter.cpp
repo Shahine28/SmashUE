@@ -93,6 +93,12 @@ void ASmashCharacter::Move(float MaxWalkSpeed)
 
 void ASmashCharacter::DoJump()
 {
+	GEngine->AddOnScreenDebugMessage(
+	-1,
+	3.f,
+	FColor::Cyan,
+	TEXT("PlayerJump")
+	);
 	Jump();
 }
 
@@ -175,6 +181,12 @@ float ASmashCharacter::GetInputMoveY() const
 void ASmashCharacter::OnInputMoveY(const FInputActionValue& InputActionValue)
 {
 	InputMoveY = InputActionValue.Get<float>();
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		3.f,
+		FColor::Cyan,
+		FString::Printf(TEXT("InputMoveY value = %f"), InputMoveY)
+		);
 	JumpFlipFlop = !JumpFlipFlop;
 	if (JumpFlipFlop)
 	{
@@ -183,7 +195,7 @@ void ASmashCharacter::OnInputMoveY(const FInputActionValue& InputActionValue)
 		-1,
 		3.f,
 		FColor::Cyan,
-		TEXT("Completed")
+		TEXT("Completed Jump Input")
 		);
 	}
 }
