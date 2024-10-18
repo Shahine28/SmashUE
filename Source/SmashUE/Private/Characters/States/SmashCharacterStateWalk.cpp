@@ -28,12 +28,12 @@ void USmashCharacterStateWalk::StateEnter(ESmashCharacterStateID PreviousStateID
 {
 	Super::StateEnter(PreviousStateID);
 	
-	// GEngine->AddOnScreenDebugMessage(
-	// -1,
-	// 3.f,
-	// FColor::Cyan,
-	// TEXT("Enter State: Walk")
-	// );
+	GEngine->AddOnScreenDebugMessage(
+	-1,
+	3.f,
+	FColor::Blue,
+	TEXT("Enter State: Walk")
+	);
 
 	Character->InputMoveXFastEvent.AddDynamic(this, &USmashCharacterStateWalk::OnInputMoveXFast);
 	Character->InputMoveYFastEvent.AddDynamic(this, &USmashCharacterStateWalk::OnInputMoveYFast);

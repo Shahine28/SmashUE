@@ -29,15 +29,16 @@ void USmashCharacterStateIdle::StateEnter(ESmashCharacterStateID PreviousStateID
 {
 	Super::StateEnter(PreviousStateID);
 	
-	/*Engine->AddOnScreenDebugMessage(
+	GEngine->AddOnScreenDebugMessage(
 		-1,
 		3.f,
-		FColor::Cyan,
+		FColor::Red,
 		TEXT("Enter State: Idle")
-		);*/
+		);
 	
 	Character->InputMoveXFastEvent.AddDynamic(this, &USmashCharacterStateIdle::OnInputMoveXFast);
 	Character->InputMoveYFastEvent.AddDynamic(this, &USmashCharacterStateIdle::OnInputMoveYFast);
+	Character->CurrentJumpCount = 0;
 }
 
 void USmashCharacterStateIdle::StateExit(ESmashCharacterStateID NextStateID)
@@ -73,7 +74,8 @@ void USmashCharacterStateIdle::StateTick(float DeltaTime)
 	{
 		StateMachine->ChangeState(ESmashCharacterStateID::Jump);
 	}
-	if (FMath::Abs(Character->GetInputMoveX()) > CharacterSettings->InputMoveXTreshold)
+	if (FMath::Abs(Character->GetInputMoveX()) > CharacterSettings->InputMoveXTreshold
+		&& Character->GetCharacterMovement()->IsMovingOnGround())
 	{
 		StateMachine->ChangeState(ESmashCharacterStateID::Walk);
 	}

@@ -100,6 +100,9 @@ public:
 	UPROPERTY()
 	bool JumpFlipFlop = true;
 
+	UPROPERTY()
+	int CurrentJumpCount = 0;
+
 
 	protected:
 	UPROPERTY()

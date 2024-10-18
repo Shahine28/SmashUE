@@ -19,9 +19,9 @@ void ULocalMultiplayerSubsystem::CreateAndInitPlayers(ELocalMultiplayerInputMapp
 		if (!GetWorld()->GetGameInstance()->GetLocalPlayerByIndex(i))
 		{
 			UGameplayStatics::CreatePlayer(GetWorld(), i);
-			FString PlayerMessage = FString::Printf(TEXT("Player %d created"), i);
-			
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, PlayerMessage);
+			// FString PlayerMessage = FString::Printf(TEXT("Player %d created"), i);
+			//
+			// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, PlayerMessage);
 		}
 
 	}

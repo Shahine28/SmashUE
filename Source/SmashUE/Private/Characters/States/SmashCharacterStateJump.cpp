@@ -18,16 +18,17 @@ ESmashCharacterStateID USmashCharacterStateJump::GetStateID()
 void USmashCharacterStateJump::StateEnter(ESmashCharacterStateID PreviousStateID)
 {
 	Super::StateEnter(PreviousStateID);
-	// GEngine->AddOnScreenDebugMessage(
-	// -1,
-	// 3.f,
-	// FColor::Cyan,
-	// TEXT("Enter State: Jump")
-	// );
+	GEngine->AddOnScreenDebugMessage(
+	-1,
+	3.f,
+	FColor::Purple,
+	TEXT("Enter State: Jump")
+	);
 	if (Character->JumpMaxCount != CharacterSettings->JumpMaxCount)
 	{
 		Character->JumpMaxCount = CharacterSettings->JumpMaxCount;
 	}
+	Character->CurrentJumpCount++;
 	Character->GetCharacterMovement()->JumpZVelocity = (2 * JumpMaxHeight) / JumpDuration;
 	Character->GetCharacterMovement()->GravityScale = ((-2 * JumpMaxHeight)/FMath::Square(JumpDuration))/GetWorld()->GetGravityZ();
 	Character->GetCharacterMovement()->AirControl = JumpAirControl;
@@ -36,12 +37,12 @@ void USmashCharacterStateJump::StateEnter(ESmashCharacterStateID PreviousStateID
 	if (!Character->JumpFlipFlop)
 	{
 		Character->bCanJump = false;
-		GEngine->AddOnScreenDebugMessage(
-		-1,
-		3.f,
-		FColor::Cyan,
-		TEXT("Started")
-		);
+		// GEngine->AddOnScreenDebugMessage(
+		// -1,
+		// 3.f,
+		// FColor::Cyan,
+		// TEXT("Started")
+		// );
 	}
 }
 
@@ -62,6 +63,7 @@ void USmashCharacterStateJump::StateExit(ESmashCharacterStateID NextStateID)
 
 void USmashCharacterStateJump::StateTick(float DeltaTime)
 {
+	Super::StateTick(DeltaTime);
 	Timer += DeltaTime;
 	// Super::StateTick(DeltaTime);
 	// GEngine->AddOnScreenDebugMessage(
@@ -82,7 +84,7 @@ void USmashCharacterStateJump::StateTick(float DeltaTime)
 		Character->Move(JumpWalkSpeed);
 	}
 	else if (Character->GetInputMoveY() > CharacterSettings->InputMoveYTreshold
-		&& Character->JumpCurrentCount < Character->JumpMaxCount && Character->bCanJump)
+		&& Character->CurrentJumpCount < Character->JumpMaxCount && Character->bCanJump)
 	{
 		StateMachine->ChangeState(ESmashCharacterStateID::Jump);
 	}

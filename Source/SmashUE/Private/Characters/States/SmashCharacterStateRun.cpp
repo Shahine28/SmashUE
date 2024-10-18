@@ -23,12 +23,12 @@ void USmashCharacterStateRun::StateEnter(ESmashCharacterStateID PreviousStateID)
 {
 	Super::StateEnter(PreviousStateID);
 	
-	// GEngine->AddOnScreenDebugMessage(
-	// -1,
-	// 3.f,
-	// FColor::Cyan,
-	// TEXT("Enter State: Run")
-	// );
+	GEngine->AddOnScreenDebugMessage(
+	-1,
+	3.f,
+	FColor::Black,
+	TEXT("Enter State: Run")
+	);
 	Character->InputMoveYFastEvent.AddDynamic(this, &USmashCharacterStateRun::OnInputMoveYFast);
 }
 

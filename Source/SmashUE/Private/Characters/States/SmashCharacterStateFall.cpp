@@ -18,6 +18,11 @@ void USmashCharacterStateFall::StateEnter(ESmashCharacterStateID PreviousStateID
 	Super::StateEnter(PreviousStateID);
 	Character->GetCharacterMovement()->AirControl = FallAirControl;
 	Character->GetCharacterMovement()->GravityScale = FallGravityScale;
+	GEngine->AddOnScreenDebugMessage(
+	-1,
+	3.f,
+	FColor::Green,
+	TEXT("Enter State: Fall"));
 }
 
 void USmashCharacterStateFall::StateExit(ESmashCharacterStateID NextStateID)
@@ -44,7 +49,7 @@ void USmashCharacterStateFall::StateTick(float DeltaTime)
 		Character->GetCharacterMovement()->GravityScale = FallFastGravityScale;
 	}
 	else if (Character->GetInputMoveY() > CharacterSettings->InputMoveYTreshold && Character->bCanJump &&
-		Character->JumpCurrentCount < Character->JumpMaxCount)
+		Character->CurrentJumpCount < Character->JumpMaxCount)
 	{
 		StateMachine->ChangeState(ESmashCharacterStateID::Jump);
 	}
